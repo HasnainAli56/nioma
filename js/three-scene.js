@@ -121,36 +121,40 @@ function createGlobalParticleBackground() {
     mainGroup.add(globalParticleSystem);
 }
 
-// 1. HERO 3D SCENE (X = 0)
+// 1. HERO 3D SCENE: FUTURISTIC QUANTUM NEURAL AI CORE (X = 0)
 function build3DScene0Hero(originX) {
     heroGroup = new THREE.Group();
     heroGroup.position.set(originX + 7, 0, 0);
 
-    const globeGeo = new THREE.IcosahedronGeometry(3.5, 4);
-    const globeMat = new THREE.MeshStandardMaterial({
+    // Outer Quantum Structure: Dual-wireframe Icosahedron Matrix
+    const outerGeo = new THREE.IcosahedronGeometry(3.6, 2);
+    const outerMat = new THREE.MeshStandardMaterial({
         color: 0x00f2fe,
         wireframe: true,
         transparent: true,
-        opacity: 0.45,
+        opacity: 0.55,
         emissive: 0x00f2fe,
-        emissiveIntensity: 0.4
+        emissiveIntensity: 0.5
     });
-    heroGlobe = new THREE.Mesh(globeGeo, globeMat);
+    heroGlobe = new THREE.Mesh(outerGeo, outerMat);
     heroGroup.add(heroGlobe);
 
-    const coreGeo = new THREE.SphereGeometry(2.1, 32, 32);
+    // Central AI Neural Engine Core: Metallic TorusKnot
+    const coreGeo = new THREE.TorusKnotGeometry(1.8, 0.55, 120, 16);
     const coreMat = new THREE.MeshPhysicalMaterial({
         color: 0x7000ff,
         emissive: 0x7000ff,
-        emissiveIntensity: 0.8,
+        emissiveIntensity: 1.1,
         roughness: 0.1,
         metalness: 0.9,
-        clearcoat: 1.0
+        clearcoat: 1.0,
+        clearcoatRoughness: 0.1
     });
     heroCore = new THREE.Mesh(coreGeo, coreMat);
     heroGroup.add(heroCore);
 
-    const ringRadii = [4.8, 5.5, 6.2];
+    // Multi-Axis Holographic Gyro Rings
+    const ringRadii = [4.6, 5.5, 6.4];
     const ringColors = [0x00f2fe, 0x7000ff, 0xff007f];
     const ringRotations = [
         { x: Math.PI / 3, y: 0, z: 0 },
@@ -159,19 +163,31 @@ function build3DScene0Hero(originX) {
     ];
 
     ringRadii.forEach((radius, i) => {
-        const ringGeo = new THREE.TorusGeometry(radius, 0.05, 16, 100);
-        const ringMat = new THREE.MeshBasicMaterial({ color: ringColors[i], transparent: true, opacity: 0.7 });
+        const ringGeo = new THREE.TorusGeometry(radius, 0.06, 16, 100);
+        const ringMat = new THREE.MeshStandardMaterial({
+            color: ringColors[i],
+            emissive: ringColors[i],
+            emissiveIntensity: 0.7,
+            transparent: true,
+            opacity: 0.8
+        });
         const ring = new THREE.Mesh(ringGeo, ringMat);
         ring.rotation.set(ringRotations[i].x, ringRotations[i].y, ringRotations[i].z);
         heroRings.push(ring);
         heroGroup.add(ring);
     });
 
-    const satGeo = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-    const satMat = new THREE.MeshStandardMaterial({ color: 0x00f2fe, emissive: 0x00f2fe, emissiveIntensity: 0.6 });
-    for (let i = 0; i < 6; i++) {
+    // Orbiting AI Matchmaking Node Satellites (Enterprises & Vendors)
+    const satGeo = new THREE.OctahedronGeometry(0.38);
+    const satMat = new THREE.MeshStandardMaterial({
+        color: 0x00f2fe,
+        emissive: 0x00f2fe,
+        emissiveIntensity: 1.0
+    });
+
+    for (let i = 0; i < 8; i++) {
         const sat = new THREE.Mesh(satGeo, satMat);
-        sat.userData = { angle: (i / 6) * Math.PI * 2, radius: 5.2, speed: 0.015 + i * 0.003 };
+        sat.userData = { angle: (i / 8) * Math.PI * 2, radius: 5.2, speed: 0.015 + (i % 3) * 0.004 };
         heroSatellites.push(sat);
         heroGroup.add(sat);
     }
