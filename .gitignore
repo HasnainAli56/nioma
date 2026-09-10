@@ -1,0 +1,13 @@
+# Ignore temporary dumps and scratch files
+site_dump.txt
+analysis.txt
+result.txt
+parse_dump.py
+inspect_site.py
+summary.txt
+
+# OS & Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
