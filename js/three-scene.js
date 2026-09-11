@@ -44,8 +44,9 @@ function initThreeScene() {
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.4;
+    renderer.toneMappingExposure = 1.35;
     container.appendChild(renderer.domElement);
 
     mainGroup = new THREE.Group();
@@ -68,20 +69,83 @@ function initThreeScene() {
 }
 
 function setupLighting() {
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
+    // Crisp Ambient Light ensuring 100% clear texture & geographic detail visibility across the globe
+    const ambientLight = new THREE.AmbientLight(0xdbeafe, 0.75);
     scene.add(ambientLight);
 
-    const cyanLight = new THREE.PointLight(0x00f2fe, 6, 90);
-    cyanLight.position.set(10, 10, 15);
+    // Directional Key Light illuminating the front-right face of the Earth GLB model
+    const keyLight = new THREE.DirectionalLight(0xffffff, 2.4);
+    keyLight.position.set(22, 12, 18);
+    scene.add(keyLight);
+
+    // Cyan Fill & Rim Light for 3D glowing outlines
+    const cyanLight = new THREE.PointLight(0x00f2fe, 4.0, 70);
+    cyanLight.position.set(10, 8, 12);
     scene.add(cyanLight);
 
-    const purpleLight = new THREE.PointLight(0x7000ff, 7, 100);
-    purpleLight.position.set(-10, -10, 12);
+    // Deep Purple Fill Light from lower left
+    const purpleLight = new THREE.PointLight(0x7000ff, 3.5, 80);
+    purpleLight.position.set(-15, -10, 10);
     scene.add(purpleLight);
+}
 
-    const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
-    dirLight.position.set(20, 30, 25);
-    scene.add(dirLight);
+function createDarkEarthTexture() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 2048;
+    canvas.height = 1024;
+    const ctx = canvas.getContext('2d');
+
+    // 1. Deep Black Ocean Base
+    ctx.fillStyle = '#03050a';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // 2. Subtle Dark Slate Geographic Landmasses
+    ctx.fillStyle = '#111622';
+    ctx.strokeStyle = '#1d2638';
+    ctx.lineWidth = 2;
+
+    const drawLand = (coords) => {
+        ctx.beginPath();
+        coords.forEach(([x, y], idx) => {
+            const px = (x / 360 + 0.5) * canvas.width;
+            const py = (-y / 180 + 0.5) * canvas.height;
+            if (idx === 0) ctx.moveTo(px, py);
+            else ctx.lineTo(px, py);
+        });
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+    };
+
+    // North America
+    drawLand([[-160,65],[-130,70],[-80,75],[-60,60],[-65,45],[-80,30],[-105,20],[-120,35],[-160,60]]);
+    // South America
+    drawLand([[-80,10],[-35,-5],[-40,-25],[-70,-55],[-80,-30],[-80,10]]);
+    // Europe & Asia
+    drawLand([[-10,35],[30,40],[60,65],[100,75],[140,70],[170,60],[140,35],[100,10],[70,25],[40,35],[10,40],[-10,35]]);
+    // Africa
+    drawLand([[-15,35],[35,30],[50,10],[40,-35],[20,-35],[-15,5],[-15,35]]);
+    // Australia
+    drawLand([[115,-15],[150,-12],[155,-35],[130,-38],[115,-25],[115,-15]]);
+
+    // 3. Subtle Cyber City/Tech Lights (Cyan #00f2fe dots at 0.18 opacity)
+    ctx.fillStyle = 'rgba(0, 242, 254, 0.18)';
+    const cityPoints = [
+        [-74, 40], [-118, 34], [-43, -22], [0, 51], [13, 52], [37, 55],
+        [55, 25], [77, 28], [103, 1], [121, 31], [139, 35], [151, -33]
+    ];
+    cityPoints.forEach(([x, y]) => {
+        const px = (x / 360 + 0.5) * canvas.width;
+        const py = (-y / 180 + 0.5) * canvas.height;
+        ctx.beginPath();
+        ctx.arc(px, py, 6, 0, Math.PI * 2);
+        ctx.fill();
+    });
+
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.ClampToEdgeWrapping;
+    return texture;
 }
 
 function createGlobalParticleBackground() {
@@ -121,76 +185,161 @@ function createGlobalParticleBackground() {
     mainGroup.add(globalParticleSystem);
 }
 
-// 1. HERO 3D SCENE: SLEEK FLOATING AI GLASS CHIP & CYBER CRYSTAL MATRIX (X = 0)
+/// 1. HERO 3D SCENE: CINEMATIC SHADOWED EARTH & FILM/TECH ORBITAL SYSTEM (X = 0)
 function build3DScene0Hero(originX) {
     heroGroup = new THREE.Group();
-    heroGroup.position.set(originX + 6.5, 0, 0);
+    heroGroup.position.set(originX + 3.4, 0, 0); // Positioned comfortably on the RIGHT side of viewport
 
-    // 1. Central Diamond Cyber Crystal
-    const crystalGeo = new THREE.OctahedronGeometry(2.4, 0);
-    const crystalMat = new THREE.MeshPhysicalMaterial({
-        color: 0x00f2fe,
-        emissive: 0x7000ff,
-        emissiveIntensity: 0.8,
-        roughness: 0.05,
-        metalness: 0.95,
-        clearcoat: 1.0,
-        clearcoatRoughness: 0.05,
-        wireframe: false
-    });
-    heroCore = new THREE.Mesh(crystalGeo, crystalMat);
-    heroGroup.add(heroCore);
-
-    // Wireframe Outer Diamond Cage
-    const cageGeo = new THREE.OctahedronGeometry(2.85, 1);
-    const cageMat = new THREE.MeshStandardMaterial({
-        color: 0x00f2fe,
-        wireframe: true,
-        transparent: true,
-        opacity: 0.6,
+    // Create primary heroGlobe mesh container immediately for instant frame 1 render
+    const earthTexture = createDarkEarthTexture();
+    const globeGeo = new THREE.SphereGeometry(2.6, 64, 64);
+    const globeMat = new THREE.MeshStandardMaterial({
+        map: earthTexture,
+        color: 0x1a2332,
+        roughness: 0.5,
+        metalness: 0.3,
         emissive: 0x00f2fe,
-        emissiveIntensity: 0.6
+        emissiveIntensity: 0.08
     });
-    heroGlobe = new THREE.Mesh(cageGeo, cageMat);
+    heroGlobe = new THREE.Mesh(globeGeo, globeMat);
     heroGroup.add(heroGlobe);
 
-    // 2. Sleek Orbiting Floating AI Glass Chips (6 Micro Cards)
-    const chipGeo = new THREE.BoxGeometry(0.8, 1.2, 0.08);
-    const chipMat = new THREE.MeshPhysicalMaterial({
-        color: 0x00f2fe,
-        emissive: 0x00f2fe,
-        emissiveIntensity: 0.4,
-        roughness: 0.1,
-        metalness: 0.8,
-        transparent: true,
-        opacity: 0.85
-    });
+    // Asynchronously load user's 3d-earth.glb model and replace/attach once ready
+    if (typeof THREE.GLTFLoader !== 'undefined') {
+        const loader = new THREE.GLTFLoader();
+        loader.load('3d-earth.glb', (gltf) => {
+            const model = gltf.scene;
+            
+            // Auto-scale to fit 5.2 units diameter
+            const box = new THREE.Box3().setFromObject(model);
+            const size = box.getSize(new THREE.Vector3());
+            const maxDim = Math.max(size.x, size.y, size.z);
+            const targetScale = maxDim > 0 ? (5.2 / maxDim) : 1;
+            model.scale.set(targetScale, targetScale, targetScale);
 
-    for (let i = 0; i < 6; i++) {
-        const chip = new THREE.Mesh(chipGeo, chipMat);
-        const angle = (i / 6) * Math.PI * 2;
-        chip.position.set(Math.cos(angle) * 4.8, Math.sin(angle * 2) * 0.8, Math.sin(angle) * 4.8);
-        chip.rotation.set(Math.random(), Math.random(), Math.random());
-        chip.userData = { angle: angle, radius: 4.8, speed: 0.012 + (i % 2) * 0.004, originalY: chip.position.y };
-        heroSatellites.push(chip);
-        heroGroup.add(chip);
+            // Smooth shading & realistic lighting: compute smooth vertex normals to fix low-poly facets
+            model.traverse((child) => {
+                if (child.isMesh) {
+                    if (child.geometry) {
+                        child.geometry.computeVertexNormals();
+                    }
+                    if (child.material) {
+                        child.material.flatShading = false;
+                        child.material.roughness = 0.5;
+                        child.material.metalness = 0.15;
+                        if (child.material.map) {
+                            child.material.map.encoding = THREE.sRGBEncoding;
+                            child.material.map.needsUpdate = true;
+                        } else {
+                            child.material.map = earthTexture;
+                        }
+                        child.material.needsUpdate = true;
+                    }
+                }
+            });
+
+            // Set front-facing orientation for Earth model
+            model.rotation.y = 1.4;
+
+            // Replace placeholder globe with loaded GLB model
+            heroGroup.remove(heroGlobe);
+            heroGlobe = model;
+            heroGroup.add(heroGlobe);
+            console.log("3D Earth GLB loaded & rendered with smooth normals successfully!");
+        }, undefined, (error) => {
+            console.log('GLTF loader error fallback active:', error);
+        });
     }
 
-    // 3. Thin Laser Ring
-    const ringGeo = new THREE.TorusGeometry(4.8, 0.04, 16, 120);
-    const ringMat = new THREE.MeshStandardMaterial({
+    // Subtle Atmospheric Glow Shell
+    const atmosGeo = new THREE.SphereGeometry(2.95, 64, 64);
+    const atmosMat = new THREE.MeshBasicMaterial({
+        color: 0x00f2fe,
+        transparent: true,
+        opacity: 0.22,
+        side: THREE.BackSide
+    });
+    const atmosMesh = new THREE.Mesh(atmosGeo, atmosMat);
+    heroGroup.add(atmosMesh);
+
+    // 2. ELEGANT ASTRONOMY ORBITAL TRACKING PATHS (CYAN/BLUE HIGHLIGHTS)
+    const ringRadii = [3.6, 4.3, 5.0, 5.7];
+    const ringColors = [0x00f2fe, 0x3b82f6, 0x7000ff, 0x00f2fe];
+    const ringRotations = [
+        { x: Math.PI / 4, y: 0, z: Math.PI / 6 },
+        { x: -Math.PI / 3.5, y: Math.PI / 5, z: 0 },
+        { x: Math.PI / 5, y: -Math.PI / 3, z: Math.PI / 4 },
+        { x: -Math.PI / 6, y: Math.PI / 4, z: -Math.PI / 5 }
+    ];
+
+    ringRadii.forEach((radius, i) => {
+        const ringGeo = new THREE.TorusGeometry(radius, 0.02, 16, 120);
+        const ringMat = new THREE.MeshStandardMaterial({
+            color: ringColors[i],
+            emissive: ringColors[i],
+            emissiveIntensity: 0.8,
+            transparent: true,
+            opacity: 0.65
+        });
+        const ring = new THREE.Mesh(ringGeo, ringMat);
+        ring.rotation.set(ringRotations[i].x, ringRotations[i].y, ringRotations[i].z);
+        heroRings.push(ring);
+        heroGroup.add(ring);
+    });
+
+    // 3. CINEMATIC FILM INDUSTRY FRAME MARKERS & RETICLES
+    const frameGeo = new THREE.BoxGeometry(0.3, 0.18, 0.012);
+    const frameMat = new THREE.MeshStandardMaterial({
         color: 0x00f2fe,
         emissive: 0x00f2fe,
         emissiveIntensity: 0.9,
-        transparent: true,
-        opacity: 0.75
+        wireframe: true
     });
-    const ring = new THREE.Mesh(ringGeo, ringMat);
-    ring.rotation.x = Math.PI / 3.5;
-    heroRings.push(ring);
-    heroGroup.add(ring);
+
+    for (let i = 0; i < 10; i++) {
+        const frame = new THREE.Mesh(frameGeo, frameMat);
+        const angle = (i / 10) * Math.PI * 2;
+        const radius = ringRadii[i % ringRadii.length];
+        frame.position.set(Math.cos(angle) * radius, Math.sin(angle * 1.5) * 1.0, Math.sin(angle) * radius);
+        frame.userData = { angle: angle, radius: radius, speed: 0.008 + (i % 3) * 0.003 };
+        heroSatellites.push(frame);
+        heroGroup.add(frame);
+    }
+
+    // 4. REALISTIC MODERN SATELLITES (Body + Solar Panels + Blue Beacon Light)
+    for (let s = 0; s < 4; s++) {
+        const satGroup = new THREE.Group();
+        
+        // Body
+        const bodyGeo = new THREE.BoxGeometry(0.24, 0.24, 0.35);
+        const bodyMat = new THREE.MeshStandardMaterial({ color: 0x202634, metalness: 0.9, roughness: 0.2 });
+        const body = new THREE.Mesh(bodyGeo, bodyMat);
+        satGroup.add(body);
+
+        // Solar Wings
+        const wingGeo = new THREE.BoxGeometry(0.7, 0.14, 0.02);
+        const wingMat = new THREE.MeshStandardMaterial({ color: 0x051a3a, emissive: 0x3b82f6, emissiveIntensity: 0.4 });
+        const wing = new THREE.Mesh(wingGeo, wingMat);
+        satGroup.add(wing);
+
+        // Beacon Light
+        const beaconGeo = new THREE.SphereGeometry(0.05);
+        const beaconMat = new THREE.MeshBasicMaterial({ color: 0x00f2fe });
+        const beacon = new THREE.Mesh(beaconGeo, beaconMat);
+        beacon.position.set(0, 0.15, 0);
+        satGroup.add(beacon);
+
+        const angle = (s / 4) * Math.PI * 2 + 0.5;
+        const radius = 4.6;
+        satGroup.position.set(Math.cos(angle) * radius, Math.sin(angle * 1.5), Math.sin(angle) * radius);
+        satGroup.userData = { angle: angle, radius: radius, speed: 0.006 + s * 0.002 };
+        
+        heroSatellites.push(satGroup);
+        heroGroup.add(satGroup);
+    }
 
     mainGroup.add(heroGroup);
+    updateHeroGroupPosition();
 }
 
 // 2. VALUES 3D SCENE (X = 25)
@@ -352,10 +501,29 @@ function onMouseMove(event) {
     pointer.y = mouse.y;
 }
 
+function updateHeroGroupPosition() {
+    if (!heroGroup) return;
+    const aspect = window.innerWidth / window.innerHeight;
+    if (aspect >= 1.4) {
+        heroGroup.position.x = 4.4;
+        heroGroup.position.y = 0;
+        heroGroup.scale.set(1.05, 1.05, 1.05);
+    } else if (aspect >= 1.1) {
+        heroGroup.position.x = 3.6;
+        heroGroup.position.y = 0;
+        heroGroup.scale.set(0.9, 0.9, 0.9);
+    } else {
+        heroGroup.position.x = 0;
+        heroGroup.position.y = -2.4;
+        heroGroup.scale.set(0.7, 0.7, 0.7);
+    }
+}
+
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    updateHeroGroupPosition();
 }
 
 // Render Animation Loop
@@ -376,17 +544,16 @@ function animateThreeScene() {
     camera.rotation.z = currentCameraRot.z;
 
     if (heroGlobe) {
-        heroGlobe.rotation.y += 0.006;
-        heroCore.rotation.y -= 0.009;
+        heroGlobe.rotation.y += 0.0012; // Slow continuous planetary rotation
         heroRings.forEach((ring, i) => {
-            ring.rotation.z += (i % 2 === 0 ? 0.005 : -0.005);
+            ring.rotation.z += (i % 2 === 0 ? 0.0025 : -0.0025);
+            ring.rotation.y += 0.001;
         });
         heroSatellites.forEach((sat) => {
             sat.userData.angle += sat.userData.speed;
             sat.position.x = Math.cos(sat.userData.angle) * sat.userData.radius;
             sat.position.z = Math.sin(sat.userData.angle) * sat.userData.radius;
-            sat.rotation.x += 0.02;
-            sat.rotation.y += 0.02;
+            sat.rotation.y += 0.01;
         });
     }
 

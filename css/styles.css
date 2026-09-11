@@ -418,15 +418,16 @@ body {
 
 /* SECTION 0: HERO */
 .hero-card {
-    max-width: 780px;
+    max-width: 550px;
+    width: 44vw;
     text-align: left;
     margin-right: auto;
-    margin-left: 3vw;
+    margin-left: 2vw;
 }
 
 .hero-card h1 {
     font-family: var(--font-heading);
-    font-size: 3.1rem;
+    font-size: 2.85rem;
     font-weight: 800;
     line-height: 1.1;
     letter-spacing: -0.5px;
@@ -435,26 +436,26 @@ body {
 
 .hero-subtext {
     color: var(--text-secondary);
-    font-size: 1.05rem;
-    line-height: 1.6;
-    margin-bottom: 24px;
+    font-size: 0.98rem;
+    line-height: 1.55;
+    margin-bottom: 22px;
 }
 
 .hero-actions {
     display: flex;
     align-items: center;
-    gap: 16px;
-    margin-bottom: 28px;
+    gap: 14px;
+    margin-bottom: 24px;
 }
 
 .btn-linearity {
-    padding: 13px 30px;
+    padding: 12px 26px;
     background: linear-gradient(135deg, var(--cyan-glow), var(--purple-glow));
     border-radius: 30px;
     color: #fff;
     text-decoration: none;
     font-weight: 700;
-    font-size: 0.92rem;
+    font-size: 0.88rem;
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -469,14 +470,14 @@ body {
 }
 
 .btn-ghost {
-    padding: 13px 28px;
+    padding: 12px 24px;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 30px;
     color: #fff;
     text-decoration: none;
     font-weight: 600;
-    font-size: 0.92rem;
+    font-size: 0.88rem;
     transition: all 0.3s ease;
     cursor: pointer;
 }
@@ -488,9 +489,9 @@ body {
 
 .metrics-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    padding-top: 20px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px 20px;
+    padding-top: 18px;
     border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
 

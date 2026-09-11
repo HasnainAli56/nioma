@@ -189,13 +189,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Mouse Drag-to-Scroll
+    // Mouse Drag-to-Scroll (with strict release handlers)
     let isDragging = false;
     let startX = 0;
     let startScrollY = 0;
 
+    const stopDragging = () => {
+        if (isDragging) {
+            isDragging = false;
+            document.body.style.cursor = 'default';
+        }
+    };
+
     window.addEventListener('mousedown', (e) => {
-        if (['INPUT', 'SELECT', 'TEXTAREA', 'BUTTON', 'A', 'SVG', 'PATH'].includes(e.target.tagName)) return;
+        if (['INPUT', 'SELECT', 'TEXTAREA', 'BUTTON', 'A', 'SVG', 'PATH', 'OPTION'].includes(e.target.tagName)) return;
         isDragging = true;
         startX = e.clientX;
         startScrollY = window.scrollY;
@@ -205,8 +212,14 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('mousemove', (e) => {
         if (!isDragging) return;
         const deltaX = startX - e.clientX;
-        window.scrollTo(0, startScrollY + deltaX * 2.5);
+        // Only scroll if user actively drags more than 10px
+        if (Math.abs(deltaX) > 10) {
+            window.scrollTo(0, startScrollY + deltaX * 1.5);
+        }
     });
+
+    window.addEventListener('mouseup', stopDragging);
+    window.addEventListener('mouseleave', stopDragging);
 
     // Touch Swipe Navigation for Mobile Devices
     let touchStartX = 0;
