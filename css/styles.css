@@ -670,8 +670,8 @@ body {
 
 /* Callout Positions matching precision SVG target lines */
 .callout-realtimedata {
-    left: calc(40.1% - 175px);
-    top: calc(36.1% - 18px);
+    left: calc(41.0% - 175px);
+    top: calc(26.5% - 18px);
 }
 
 .callout-healthierplanet {
