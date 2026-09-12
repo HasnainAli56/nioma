@@ -87,5 +87,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // 4. Subtle Cinematic 3D Mouse Parallax for Hero Video Planet
+    const heroPlanetVideo = document.getElementById('hero-planet-video');
+    if (heroPlanetVideo) {
+        window.addEventListener('mousemove', (e) => {
+            const offsetX = (e.clientX / window.innerWidth - 0.5) * 1.8;
+            const offsetY = (e.clientY / window.innerHeight - 0.5) * 1.8;
+            document.documentElement.style.setProperty('--hero-video-x', `${offsetX}%`);
+            document.documentElement.style.setProperty('--hero-video-y', `${offsetY}%`);
+        });
+    }
+
     console.log("Linearity.io 3D Card Tilt, Spotlight & Glow Engine initialized!");
 });

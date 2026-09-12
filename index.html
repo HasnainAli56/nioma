@@ -30,10 +30,10 @@
     <!-- 3D WebGL Canvas Background -->
     <div id="canvas-container"></div>
 
-    <!-- Linearity.io-style Navigation Bar -->
+    <!-- Minimalist Transparent Floating Navigation Bar (Matching Reference Design) -->
     <header class="header-nav">
         <div class="logo">
-            <img src="Gemini_Generated_Image_8i76ww8i76ww8i76-removebg-preview.png" alt="NIIOMA Logo" class="brand-logo-img">
+            <span class="brand-logo-text">NIIOMA</span>
         </div>
         <nav class="nav-links">
             <a href="#hero" class="nav-link active" data-index="0">Home</a>
@@ -44,7 +44,10 @@
             <a href="#register" class="nav-link" data-index="5">Register</a>
         </nav>
         <div class="nav-cta">
-            <a href="#register" class="btn-linearity-sm">Join Ecosystem</a>
+            <a href="#register" class="btn-nav-outline">
+                <span>Get in Touch</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
         </div>
     </header>
 
@@ -66,6 +69,96 @@
 
         <!-- SECTION 0: HERO -->
         <section id="hero" class="section-panel" data-scene="0">
+            <!-- Hero Planet Video Visual & Neon Atmosphere System (Matching Reference UI) -->
+            <div class="hero-video-container" id="hero-video-box">
+                <!-- Deep Ambient Space Corona Glow -->
+                <div class="hero-video-glow"></div>
+
+                <!-- Intense Atmospheric Neon Aura & Rim Bloom -->
+                <div class="planet-neon-aura"></div>
+                <div class="planet-neon-rim-ring"></div>
+
+                <!-- Specular Sunburst Highlight Flare (Top Right of Planet Rim) -->
+                <div class="planet-sunburst-flare">
+                    <div class="flare-core"></div>
+                    <div class="flare-streak"></div>
+                    <div class="flare-glow"></div>
+                </div>
+
+                <!-- Cinematic Data Network Planet Video -->
+                <video class="hero-video-element" id="hero-planet-video" autoplay loop muted playsinline preload="auto">
+                    <source src="216034.mp4" type="video/mp4">
+                </video>
+
+                <!-- Glowing Orbital Tracking Rings & Sci-Fi Callouts (Matching Reference UI) -->
+                <div class="planet-orbital-system">
+                    <!-- SVG Orbital Rings -->
+                    <svg class="orbital-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none">
+                        <defs>
+                            <filter id="cyanGlow" x="-30%" y="-30%" width="160%" height="160%">
+                                <feGaussianBlur stdDeviation="4" result="blur" />
+                                <feMerge>
+                                    <feMergeNode in="blur" />
+                                    <feMergeNode in="SourceGraphic" />
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <!-- Orbit Ring 1 (Tilted loop across planet) -->
+                        <ellipse cx="560" cy="500" rx="370" ry="460" class="orbit-path orbit-1" filter="url(#cyanGlow)" />
+                        <!-- Orbit Ring 2 (Tilted second loop) -->
+                        <ellipse cx="560" cy="500" rx="470" ry="320" class="orbit-path orbit-2" transform="rotate(-26 560 500)" filter="url(#cyanGlow)" />
+                    </svg>
+
+                    <!-- Tech Annotation Callout 1: REAL-TIME DATA -->
+                    <div class="tech-callout callout-realtimedata">
+                        <div class="callout-content">
+                            <span class="callout-icon">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="3.5" fill="#00f2fe"></circle></svg>
+                            </span>
+                            <span class="callout-text">REAL-TIME DATA</span>
+                        </div>
+                        <div class="callout-pointer-line pointer-line-1"></div>
+                        <div class="callout-target-dot target-dot-1"></div>
+                    </div>
+
+                    <!-- Tech Annotation Callout 2: BETTER DECISIONS -->
+                    <div class="tech-callout callout-betterdecisions">
+                        <div class="callout-content">
+                            <span class="callout-icon">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                            </span>
+                            <span class="callout-text">BETTER DECISIONS</span>
+                        </div>
+                    </div>
+
+                    <!-- Tech Annotation Callout 3: HEALTHIER PLANET -->
+                    <div class="tech-callout callout-healthierplanet">
+                        <div class="callout-content">
+                            <span class="callout-icon">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+                            </span>
+                            <span class="callout-text">HEALTHIER PLANET</span>
+                        </div>
+                        <div class="callout-pointer-line pointer-line-3"></div>
+                        <div class="callout-target-dot target-dot-3"></div>
+                    </div>
+
+                    <!-- Floating Satellites with Solar Panels -->
+                    <div class="orbit-satellite sat-top">
+                        <div class="sat-wing sat-wing-left"></div>
+                        <div class="sat-body"></div>
+                        <div class="sat-wing sat-wing-right"></div>
+                        <div class="sat-beacon"></div>
+                    </div>
+                    <div class="orbit-satellite sat-bottom">
+                        <div class="sat-wing sat-wing-left"></div>
+                        <div class="sat-body"></div>
+                        <div class="sat-wing sat-wing-right"></div>
+                        <div class="sat-beacon"></div>
+                    </div>
+                </div>
+            </div>
+
             <div class="hero-clean-wrapper">
                 <div class="hero-tagline">
                     <span class="tagline-dot"></span> THE NEW OPERATING SYSTEM FOR GLOBAL BUSINESS
