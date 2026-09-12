@@ -69,93 +69,116 @@
 
         <!-- SECTION 0: HERO -->
         <section id="hero" class="section-panel" data-scene="0">
-            <!-- Hero Planet Video Visual & Neon Atmosphere System (Matching Reference UI) -->
+            <!-- Hero Planet Video Visual & Neon Atmosphere System (100% Fitted to Planet Boundary) -->
             <div class="hero-video-container" id="hero-video-box">
                 <!-- Deep Ambient Space Corona Glow -->
                 <div class="hero-video-glow"></div>
-
-                <!-- Intense Atmospheric Neon Aura & Rim Bloom -->
-                <div class="planet-neon-aura"></div>
-                <div class="planet-neon-rim-ring"></div>
-
-                <!-- Specular Sunburst Highlight Flare (Top Right of Planet Rim) -->
-                <div class="planet-sunburst-flare">
-                    <div class="flare-core"></div>
-                    <div class="flare-streak"></div>
-                    <div class="flare-glow"></div>
-                </div>
 
                 <!-- Cinematic Data Network Planet Video -->
                 <video class="hero-video-element" id="hero-planet-video" autoplay loop muted playsinline preload="auto">
                     <source src="216034.mp4" type="video/mp4">
                 </video>
 
-                <!-- Glowing Orbital Tracking Rings & Sci-Fi Callouts (Matching Reference UI) -->
-                <div class="planet-orbital-system">
-                    <!-- SVG Orbital Rings -->
-                    <svg class="orbital-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none">
-                        <defs>
-                            <filter id="cyanGlow" x="-30%" y="-30%" width="160%" height="160%">
-                                <feGaussianBlur stdDeviation="4" result="blur" />
-                                <feMerge>
-                                    <feMergeNode in="blur" />
-                                    <feMergeNode in="SourceGraphic" />
-                                </feMerge>
-                            </filter>
-                        </defs>
-                        <!-- Orbit Ring 1 (Tilted loop across planet) -->
-                        <ellipse cx="560" cy="500" rx="370" ry="460" class="orbit-path orbit-1" filter="url(#cyanGlow)" />
-                        <!-- Orbit Ring 2 (Tilted second loop) -->
-                        <ellipse cx="560" cy="500" rx="470" ry="320" class="orbit-path orbit-2" transform="rotate(-26 560 500)" filter="url(#cyanGlow)" />
-                    </svg>
+                <!-- Precision SVG Neon Atmosphere Glow & Concentric Orbital System (Fitted 100% to Planet Boundary) -->
+                <svg class="planet-precision-svg" viewBox="0 0 1920 1080" preserveAspectRatio="none">
+                    <defs>
+                        <!-- High Intensity Neon Atmosphere Glow Filter -->
+                        <filter id="planetAtmosphereNeon" x="-40%" y="-40%" width="180%" height="180%">
+                            <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur1" />
+                            <feGaussianBlur in="SourceGraphic" stdDeviation="16" result="blur2" />
+                            <feGaussianBlur in="SourceGraphic" stdDeviation="40" result="blur3" />
+                            <feMerge>
+                                <feMergeNode in="blur3" />
+                                <feMergeNode in="blur2" />
+                                <feMergeNode in="blur1" />
+                                <feMergeNode in="SourceGraphic" />
+                            </feMerge>
+                        </filter>
+                        
+                        <filter id="orbitGlowFilter" x="-30%" y="-30%" width="160%" height="160%">
+                            <feGaussianBlur in="SourceGraphic" stdDeviation="3.5" result="blur" />
+                            <feMerge>
+                                <feMergeNode in="blur" />
+                                <feMergeNode in="SourceGraphic" />
+                            </feMerge>
+                        </filter>
+                    </defs>
 
-                    <!-- Tech Annotation Callout 1: REAL-TIME DATA -->
-                    <div class="tech-callout callout-realtimedata">
-                        <div class="callout-content">
-                            <span class="callout-icon">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="3.5" fill="#00f2fe"></circle></svg>
-                            </span>
-                            <span class="callout-text">REAL-TIME DATA</span>
-                        </div>
-                        <div class="callout-pointer-line pointer-line-1"></div>
-                        <div class="callout-target-dot target-dot-1"></div>
-                    </div>
+                    <!-- Exact Planet Boundary Neon Glow Arc: Center cx=1842.3, cy=-113.2, R=999.3 -->
+                    <!-- Broad atmospheric bloom -->
+                    <path d="M 850,-20 A 1000 1000 0 0 0 1960,879" fill="none" stroke="rgba(0, 242, 254, 0.45)" stroke-width="40" filter="url(#planetAtmosphereNeon)" />
+                    <!-- Mid cyan atmosphere aura -->
+                    <path d="M 850,-20 A 1000 1000 0 0 0 1960,879" fill="none" stroke="rgba(56, 189, 248, 0.8)" stroke-width="16" filter="url(#planetAtmosphereNeon)" />
+                    <!-- Intense electric neon border -->
+                    <path d="M 850,-20 A 1000 1000 0 0 0 1960,879" fill="none" stroke="#00f2fe" stroke-width="4" filter="url(#planetAtmosphereNeon)" />
+                    <path d="M 850,-20 A 1000 1000 0 0 0 1960,879" fill="none" stroke="#ffffff" stroke-width="1.5" />
 
-                    <!-- Tech Annotation Callout 2: BETTER DECISIONS -->
-                    <div class="tech-callout callout-betterdecisions">
-                        <div class="callout-content">
-                            <span class="callout-icon">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-                            </span>
-                            <span class="callout-text">BETTER DECISIONS</span>
-                        </div>
-                    </div>
+                    <!-- Concentric Orbit Ring 1 (Radius 1160px) -->
+                    <path d="M 720,-30 A 1160 1140 0 0 0 1960,1021" fill="none" class="orbit-path orbit-concentric-1" filter="url(#orbitGlowFilter)" />
 
-                    <!-- Tech Annotation Callout 3: HEALTHIER PLANET -->
-                    <div class="tech-callout callout-healthierplanet">
-                        <div class="callout-content">
-                            <span class="callout-icon">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
-                            </span>
-                            <span class="callout-text">HEALTHIER PLANET</span>
-                        </div>
-                        <div class="callout-pointer-line pointer-line-3"></div>
-                        <div class="callout-target-dot target-dot-3"></div>
-                    </div>
+                    <!-- Concentric Orbit Ring 2 (Radius 1330px) -->
+                    <path d="M 580,-50 A 1330 1280 0 0 0 1842,1170" fill="none" class="orbit-path orbit-concentric-2" filter="url(#orbitGlowFilter)" />
 
-                    <!-- Floating Satellites with Solar Panels -->
-                    <div class="orbit-satellite sat-top">
-                        <div class="sat-wing sat-wing-left"></div>
-                        <div class="sat-body"></div>
-                        <div class="sat-wing sat-wing-right"></div>
-                        <div class="sat-beacon"></div>
+                    <!-- Connecting Pointer Lines for Callouts -->
+                    <!-- Line 1: REAL-TIME DATA -->
+                    <line x1="755" y1="390" x2="960" y2="350" stroke="rgba(56, 189, 248, 0.85)" stroke-width="1.5" filter="url(#orbitGlowFilter)" />
+                    <circle cx="960" cy="350" r="4.5" fill="#00f2fe" filter="url(#orbitGlowFilter)" />
+                    <circle cx="960" cy="350" r="2" fill="#ffffff" />
+
+                    <!-- Line 3: HEALTHIER PLANET -->
+                    <line x1="1120" y1="810" x2="1280" y2="700" stroke="rgba(56, 189, 248, 0.85)" stroke-width="1.5" filter="url(#orbitGlowFilter)" />
+                    <circle cx="1280" cy="700" r="4.5" fill="#00f2fe" filter="url(#orbitGlowFilter)" />
+                    <circle cx="1280" cy="700" r="2" fill="#ffffff" />
+                </svg>
+
+                <!-- Specular Sunburst Highlight Flare (Positioned right at the top-left boundary of planet: x=870, y=140) -->
+                <div class="planet-sunburst-flare">
+                    <div class="flare-core"></div>
+                    <div class="flare-streak"></div>
+                    <div class="flare-glow"></div>
+                </div>
+
+                <!-- Callout Badges -->
+                <div class="tech-callout callout-realtimedata">
+                    <div class="callout-content">
+                        <span class="callout-icon">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="3.5" fill="#00f2fe"></circle></svg>
+                        </span>
+                        <span class="callout-text">REAL-TIME DATA</span>
                     </div>
-                    <div class="orbit-satellite sat-bottom">
-                        <div class="sat-wing sat-wing-left"></div>
-                        <div class="sat-body"></div>
-                        <div class="sat-wing sat-wing-right"></div>
-                        <div class="sat-beacon"></div>
+                </div>
+
+                <div class="tech-callout callout-betterdecisions">
+                    <div class="callout-content">
+                        <span class="callout-icon">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                        </span>
+                        <span class="callout-text">BETTER DECISIONS</span>
                     </div>
+                </div>
+
+                <div class="tech-callout callout-healthierplanet">
+                    <div class="callout-content">
+                        <span class="callout-icon">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+                        </span>
+                        <span class="callout-text">HEALTHIER PLANET</span>
+                    </div>
+                </div>
+
+                <!-- Satellites on Orbit Tracks -->
+                <div class="orbit-satellite sat-concentric-1">
+                    <div class="sat-wing sat-wing-left"></div>
+                    <div class="sat-body"></div>
+                    <div class="sat-wing sat-wing-right"></div>
+                    <div class="sat-beacon"></div>
+                </div>
+
+                <div class="orbit-satellite sat-concentric-2">
+                    <div class="sat-wing sat-wing-left"></div>
+                    <div class="sat-body"></div>
+                    <div class="sat-wing sat-wing-right"></div>
+                    <div class="sat-beacon"></div>
                 </div>
             </div>
 
