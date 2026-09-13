@@ -444,7 +444,7 @@ body {
 }
 
 .gradient-text {
-    background: linear-gradient(135deg, var(--cyan-glow), var(--purple-glow));
+    background: linear-gradient(135deg, #00f2fe 0%, #38bdf8 45%, #a855f7 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -461,69 +461,52 @@ body {
 }
 
 .hero-video-container {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
     pointer-events: none;
-    overflow: hidden;
-    z-index: 2;
+    overflow: visible;
+    z-index: 3;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
+    will-change: transform;
 }
 
-/* Atmospheric cyan/blue backlight glow behind planet */
+/* Deep Atmospheric Space Corona Glow */
 .hero-video-glow {
     position: absolute;
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 55vw;
-    height: 55vw;
-    max-width: 820px;
-    max-height: 820px;
+    left: 50%;
+    bottom: -15%;
+    transform: translateX(-50%);
+    width: 90vw;
+    height: 60vw;
+    max-width: 1500px;
+    max-height: 900px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(0, 242, 254, 0.24) 0%, rgba(56, 189, 248, 0.1) 40%, transparent 70%);
+    background: radial-gradient(circle, rgba(0, 242, 254, 0.24) 0%, rgba(56, 189, 248, 0.10) 45%, transparent 70%);
     filter: blur(90px);
     pointer-events: none;
     z-index: 1;
 }
 
-/* Planet Video Element */
+/* Cinematic Earth Video Element */
 .hero-video-element {
     position: absolute;
-    inset: 0;
+    left: 0;
+    right: 0;
+    bottom: -10%;
     width: 100%;
-    height: 100%;
+    height: 125%;
     object-fit: cover;
-    object-position: right center;
-    transform-origin: center center;
-    transform: scaleX(var(--hero-video-flip)) rotate(var(--hero-video-rot)) scale(var(--hero-video-scale)) translate(var(--hero-video-x), var(--hero-video-y));
+    object-position: center bottom;
+    transform: none;
     z-index: 2;
     filter: contrast(1.15) brightness(1.05);
-    
-    /* 100% Seamless background merge with multi-stage feathering into pitch black #000000 */
-    -webkit-mask-image: radial-gradient(ellipse 65% 58% at 80% 50%, #000 35%, rgba(0, 0, 0, 0.85) 55%, rgba(0, 0, 0, 0.28) 78%, transparent 95%);
-    mask-image: radial-gradient(ellipse 65% 58% at 80% 50%, #000 35%, rgba(0, 0, 0, 0.85) 55%, rgba(0, 0, 0, 0.28) 78%, transparent 95%);
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
-}
-
-/* 1. Deep Atmospheric Neon Space Aura */
-.hero-video-glow {
-    position: absolute;
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 55vw;
-    height: 55vw;
-    max-width: 820px;
-    max-height: 820px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(0, 242, 254, 0.24) 0%, rgba(56, 189, 248, 0.1) 40%, transparent 70%);
-    filter: blur(90px);
-    pointer-events: none;
-    z-index: 1;
+    -webkit-mask-image: radial-gradient(ellipse 95% 85% at 50% 90%, #000 65%, rgba(0, 0, 0, 0.5) 82%, transparent 98%);
+    mask-image: radial-gradient(ellipse 95% 85% at 50% 90%, #000 65%, rgba(0, 0, 0, 0.5) 82%, transparent 98%);
 }
 
 /* 2. Precision SVG Atmosphere & Orbit System - 100% Boundary Alignment */
@@ -565,11 +548,11 @@ body {
     to { stroke-dashoffset: -300; }
 }
 
-/* 3. Brilliant Specular Sunburst Highlight Flare (Positioned right at the top-left boundary of planet: x=870, y=140 in 1920x1080) */
+/* 3. Specular Sunburst Highlight Flare (Positioned right at the apex of planet: cx=50.0%, cy=41.2%) */
 .planet-sunburst-flare {
     position: absolute;
-    left: 45.3%;
-    top: 13.0%;
+    left: 50.0%;
+    top: 41.2%;
     width: 140px;
     height: 140px;
     transform: translate(-50%, -50%);
@@ -615,7 +598,17 @@ body {
     filter: blur(8px);
 }
 
-/* 4. Sci-Fi Tech Callout Badges */
+/* 4. Sci-Fi Tech Callout Badges & Fade Layer */
+.hero-callouts-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+    transition: opacity 0.15s linear;
+}
+
 .tech-callout {
     position: absolute;
     display: flex;
@@ -670,18 +663,18 @@ body {
 
 /* Callout Positions matching precision SVG target lines */
 .callout-realtimedata {
-    left: calc(41.0% - 175px);
-    top: calc(26.5% - 18px);
+    left: calc(36.0% - 175px);
+    top: calc(23.5% - 18px);
 }
 
 .callout-healthierplanet {
-    left: calc(58.85% - 195px);
-    top: calc(75.0% - 18px);
+    left: 44%;
+    top: 38%;
 }
 
 .callout-betterdecisions {
-    right: 4%;
-    top: 22%;
+    right: 14%;
+    top: 24%;
 }
 
 /* Satellites on Orbit Tracks */
@@ -735,14 +728,14 @@ body {
 }
 
 .sat-concentric-1 {
-    left: 43.6%;
-    top: 43.2%;
+    left: 30%;
+    top: 52%;
     transform: translate(-50%, -50%) rotate(32deg);
 }
 
 .sat-concentric-2 {
-    left: 56.5%;
-    top: 86.5%;
+    left: 70%;
+    top: 46%;
     transform: translate(-50%, -50%) rotate(-45deg);
 }
 
@@ -765,9 +758,10 @@ body {
     font-size: 0.76rem;
     font-weight: 600;
     letter-spacing: 2.5px;
-    color: #94a3b8;
+    color: #ffffff;
     text-transform: uppercase;
     margin-bottom: 22px;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
 }
 
 .tagline-dot {
@@ -789,11 +783,12 @@ body {
 }
 
 .hero-subtext-clean {
-    color: #94a3b8;
+    color: #ffffff;
     font-size: 1.05rem;
     line-height: 1.6;
     margin-bottom: 32px;
     max-width: 520px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
 
 .hero-actions-clean {
@@ -838,20 +833,24 @@ body {
 
 .btn-hero-secondary {
     padding: 14px 28px;
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(15, 23, 42, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: 40px;
-    color: #94a3b8;
+    color: #ffffff;
     text-decoration: none;
     font-weight: 500;
     font-size: 0.95rem;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     transition: all 0.3s ease;
     cursor: pointer;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
 }
 
 .btn-hero-secondary:hover {
     color: #ffffff;
-    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.5);
 }
 
 /* Bottom Left Scroll Hint */
@@ -862,11 +861,12 @@ body {
     display: flex;
     align-items: center;
     gap: 14px;
-    color: #64748b;
+    color: #ffffff;
     font-size: 0.82rem;
     font-weight: 500;
     pointer-events: none;
     z-index: 10;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
 }
 
 .scroll-mouse-pill {
@@ -895,7 +895,7 @@ body {
     display: flex;
     align-items: center;
     gap: 16px;
-    color: #475569;
+    color: rgba(255, 255, 255, 0.7);
     font-family: var(--font-mono);
     font-size: 0.85rem;
     pointer-events: none;
@@ -1368,8 +1368,6 @@ body {
     .form-grid { grid-template-columns: 1fr; }
     
     .hero-video-element {
-        -webkit-mask-image: radial-gradient(ellipse 75% 65% at 80% 50%, #000 30%, rgba(0, 0, 0, 0.8) 55%, transparent 95%);
-        mask-image: radial-gradient(ellipse 75% 65% at 80% 50%, #000 30%, rgba(0, 0, 0, 0.8) 55%, transparent 95%);
         opacity: 0.85;
     }
 }
@@ -1434,10 +1432,6 @@ body {
         justify-content: center;
     }
     .hero-video-element {
-        object-position: center bottom;
-        transform: scaleX(var(--hero-video-flip)) scale(1.15) translateY(12%);
-        -webkit-mask-image: radial-gradient(ellipse 85% 70% at 50% 70%, #000 30%, rgba(0, 0, 0, 0.7) 60%, transparent 95%);
-        mask-image: radial-gradient(ellipse 85% 70% at 50% 70%, #000 30%, rgba(0, 0, 0, 0.7) 60%, transparent 95%);
         opacity: 0.55;
     }
 

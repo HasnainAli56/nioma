@@ -40,6 +40,39 @@ document.addEventListener('DOMContentLoaded', () => {
                     updateThreeCameraPosition(progress);
                 }
 
+                // Planet merges/fades out from Home to About, with no planet ahead
+                const planetBox = document.getElementById('hero-video-box');
+                if (planetBox) {
+                    // Gentle rise during the merge transition
+                    const maxRise = window.innerHeight * 0.14;
+                    const riseProgress = Math.min(progress / 0.16, 1.0);
+                    const riseY = -Math.sin(riseProgress * Math.PI / 2) * maxRise;
+
+                    // Merges out as you scroll from Home to About (fading out completely before About settles)
+                    let planetOpacity = 1.0;
+                    if (progress <= 0.01) {
+                        planetOpacity = 1.0;
+                    } else if (progress >= 0.16) {
+                        planetOpacity = 0.0;
+                    } else {
+                        // Smoothly merge into deep space
+                        const fadeRatio = (progress - 0.01) / 0.15;
+                        planetOpacity = Math.max(0, 1.0 - fadeRatio);
+                    }
+
+                    planetBox.style.transform = `translate3d(0, ${riseY}px, 0)`;
+                    planetBox.style.opacity = planetOpacity;
+                    planetBox.style.visibility = planetOpacity <= 0 ? 'hidden' : 'visible';
+                }
+
+                // Fade hero callouts and pointer lines quickly when leaving Home
+                const calloutsLayer = document.getElementById('hero-callouts-layer');
+                if (calloutsLayer) {
+                    const op = Math.max(0, 1 - progress / 0.07);
+                    calloutsLayer.style.opacity = op;
+                    calloutsLayer.style.pointerEvents = op < 0.1 ? 'none' : 'auto';
+                }
+
                 // Update Active Nav Link & Arrow states
                 const newIndex = Math.min(
                     Math.floor(progress * panels.length + 0.1),
